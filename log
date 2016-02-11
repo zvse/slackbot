@@ -1,0 +1,136 @@
+   [ 
+     { id: 'U08G6CUPK',
+       team_id: 'T07PX4ZC1',
+       name: 'cherkasova.maria',
+       real_name: 'Мария Черкасова'
+     },
+     { id: 'U0KDHQAAE',
+       team_id: 'T07PX4ZC1',
+       name: 'fantalin.alexander',
+       real_name: 'Александр Фанталин'
+     },
+     { id: 'U08G74X8T',
+       team_id: 'T07PX4ZC1',
+       name: 'gulya.ilya',
+       real_name: 'Илья Гуля'
+     },
+     { id: 'U08G73LG2',
+       team_id: 'T07PX4ZC1',
+       name: 'ilyin.pavel',
+       real_name: 'Павел Ильин'
+     },
+     { id: 'U08G6LJ5U',
+       team_id: 'T07PX4ZC1',
+       name: 'kiselev.dmitry',
+       real_name: 'Дмитрий Киселев'
+     },
+     { id: 'U08G637GT',
+       team_id: 'T07PX4ZC1',
+       name: 'kovalevich.artem',
+       real_name: 'Артем Ковалевич'
+     },
+
+     { id: 'U08G5TZAL',
+       team_id: 'T07PX4ZC1',
+       name: 'kraynuk.mikhail',
+       real_name: 'Михаил Крайнюк'
+     },
+     { id: 'U0L8B80DA',
+       team_id: 'T07PX4ZC1',
+       name: 'krupin.vladimir',
+       real_name: 'Vladimir Krupin'
+     },
+     { id: 'U08RQJP2Q',
+       team_id: 'T07PX4ZC1',
+       name: 'kudlov.roman',
+       real_name: 'Роман Кудлов'
+     },
+     { id: 'U08G9DADU',
+       team_id: 'T07PX4ZC1',
+       name: 'larionov.artem',
+       real_name: 'Артём Ларионов'
+     },
+     { id: 'U08G69V4H',
+       team_id: 'T07PX4ZC1',
+       name: 'lushnikov.yaroslav',
+       real_name: 'Ярослав Лушников'
+     },
+     { id: 'U08GP2HQQ',
+       team_id: 'T07PX4ZC1',
+       name: 'mansh.tatiana',
+       real_name: 'Татьяна Манш'
+     },
+     { id: 'U08G5TE1W',
+       team_id: 'T07PX4ZC1',
+       name: 'mikhailov.andrew',
+       real_name: 'Андрей Михайлов'
+     },
+     { id: 'U08G6C94H',
+       team_id: 'T07PX4ZC1',
+       name: 'prokopenko.olesya',
+       real_name: 'Олеся Прокопенко'
+     },
+     { id: 'U0FECH04S',
+       team_id: 'T07PX4ZC1',
+       name: 'rozhkov.daniil',
+       real_name: 'Даниил Рожков'
+     },
+     { id: 'U08HZ4RK7',
+       team_id: 'T07PX4ZC1',
+       name: 'ruban.pavel',
+       real_name: 'Павел Рубан'
+     },
+     { id: 'U08G6EB2P',
+       team_id: 'T07PX4ZC1',
+       name: 'shalina.alena',
+       real_name: 'Алёна Шалина'
+     },
+     {
+       id: 'U08G6AJCV',
+       team_id: 'T07PX4ZC1',
+       name: 'shlyapkin.grigoriy',
+       real_name: 'Григорий Шляпкин'
+     },
+     {
+       id: 'U08KZQSF3',
+       team_id: 'T07PX4ZC1',
+       name: 'shperling.semjon',
+       real_name: 'Семён Шперлинг'
+     },
+     {
+       id: 'U0L270FFE',
+       team_id: 'T07PX4ZC1',
+       name: 'shumkov.maksim',
+       real_name: 'Максим Шумков'
+     },
+     {
+       id: 'U08G78E2Y',
+       team_id: 'T07PX4ZC1',
+       name: 'stepanov.evgeniy',
+       real_name: 'Евгений Степанов'
+     },
+     {
+       id: 'U08G5U40J',
+       team_id: 'T07PX4ZC1',
+       name: 'troeglazov.andrey',
+       real_name: 'Андрей Троеглазов'
+     },
+     {
+       id: 'U08G5UJ8G',
+       team_id: 'T07PX4ZC1',
+       name: 'yudkin.evgeny',
+       real_name: 'Евгений Юдкин'
+     },
+     {
+       id: 'U08G854BT',
+       team_id: 'T07PX4ZC1',
+       name: 'zhambalova.namzhilma',
+       real_name: 'Намжилма Жамбалова'
+     },
+     { 
+       id: 'U0EJMKCHZ',
+       team_id: 'T07PX4ZC1',
+       name: 'zhuravlev.artyom',
+       real_name: 'Артем Журавлев'
+      }
+    ]
