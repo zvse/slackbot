@@ -14,16 +14,18 @@ var contents = fs.readFileSync("employers.json");
 var data = JSON.parse(contents);
 var members = data[currentDay - 1].members;
 
-//console.log(members);
-
-for (var i = 0; i < members.length; i++) {
-	member = members[i];
-	message = "<@" + member.id + "> " + member.ability;
-	console.log(message);
-	slack.api('chat.postMessage', {
-	  text: message,
-	  channel:'#slackbot_daemon'
-	}, function(err, response){
-	  console.log(response);
-	});
-}
+//@Todo check current day, read last message and ping members, who doesn't answered.
+var minutes = 5, the_interval = minutes * 60 * 1000;
+setInterval(function() {
+	for (var i = 0; i < members.length; i++) {
+		member = members[i];
+		message = "<@" + member.id + "> " + member.ability;
+		console.log(message);
+		slack.api('chat.postMessage', {
+		  text: message,
+		  channel:'#slackbot_daemon'
+		}, function(err, response){
+		  console.log(response);
+		});
+	}
+}, the_interval);
