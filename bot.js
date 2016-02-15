@@ -3,43 +3,39 @@
 var Slack = require('slack-node'),
     fs = require('fs'),
     sleep = require('sleep'),
+
+    apiToken = "xoxp-7813169409-8549932064-20996960166-028257259d",
+    slack = new Slack(apiToken),
+
     date = new Date(),
-    currentDay = date.getDay(),
     hours = '',
     minutes = '',
     member = '',
     message = '',
-    apiToken = "xoxp-7813169409-8549932064-20996960166-028257259d",
-    slack = new Slack(apiToken);
 
-var contents = fs.readFileSync("members.json");
-var data = JSON.parse(contents);
-var members = data[currentDay - 1].members;
+    randomNumber = Math.floor(Math.random() * 3),
 
-// Get info about all users.
-//slack.api("users.list", function(err, response) {
-//  console.log(response);
-//});
+    currentDay = date.getDay(),
+    data = fs.readFileSync("members.json"),
+    data = JSON.parse(data),
+    members = data[currentDay - 1].members,
 
-//console.log(members);
-var steps = {
-    "step_1" : false,
-    "step_2" : false,
-    "step_3" : false,
-    "step_4" : false,
-    "step_5" : false,
-    "step_6" : false
-};
-var the_interval = 60 *1000;
-var pingCount = 0;
+    steps = fs.readFileSync("steps.json"),
+    steps = JSON.parse(steps),
+
+    the_interval = 60 *1000,
+    pingCount = 0,
+    membersToday = '';
+
 var ping = setInterval(function () {
+    date = new Date();
+    currentDay = date.getDay();
     hours = date.getHours();
     minutes = date.getMinutes();
-    console.log("Часы: " + hours);
-    console.log("Минуты: " + minutes);
-    if (hours == 10 && minutes == 40) {
-        if (!steps.step_1) {
-            message = "Доброе утро!";
+    console.log("Часы: " + hours + " Минуты: " + minutes);
+    if (hours == 10 && minutes == 00) {
+        if (!steps.step_1.checked) {
+            message = steps.step_1.messages[randomNumber];
             console.log(message);
             slack.api('chat.postMessage', {
                 text: message,
@@ -47,72 +43,72 @@ var ping = setInterval(function () {
             }, function (err, response) {
                 console.log(response);
             });
-            steps.step_1 = true;
+            steps.step_1.checked = true;
         }
     }
-    if (hours == 10 && minutes == 41) {
-        if (!steps.step_2) {
+    if (hours == 10 && minutes == 01) {
+        if (!steps.step_2.checked) {
             for (var i = 0; i < members.length; i++) {
                 member = members[i];
-                message = "<@" + member.id + "> " + member.ability;
-                console.log(message);
-                slack.api('chat.postMessage', {
-                    text: message,
-                    channel: '#slackbot_daemon'
-                }, function (err, response) {
-                    console.log(response);
-                });
+                if (member.id) {
+                    membersToday += "<@" + member.id + "> ";
+                    message = "<@" + member.id + "> " + member.ability;
+                    console.log(message);
+                    slack.api('chat.postMessage', {
+                        text: message,
+                        channel: '#slackbot_daemon'
+                    }, function (err, response) {
+                        console.log(response);
+                    });
+                }
             }
-            steps.step_2 = true;
+            steps.step_2.checked = true;
         }
     }
     if (hours == 13 && minutes == 10) {
-        if (!steps.step_3) {
+        if (!steps.step_3.checked) {
             slack.api('chat.postMessage', {
-                text: 'Как идет дежурство? Какой статус?',
+                text: membersToday + steps.step_3.messages[randomNumber],
                 channel: '#slackbot_daemon'
             }, function (err, response) {
                 console.log(response);
             });
-            steps.step_3 = true;
+            steps.step_3.checked = true;
         }
     }
     if (hours == 16 && minutes == 10) {
-        if (!steps.step_4) {
+        if (!steps.step_4.checked) {
             slack.api('chat.postMessage', {
-                text: 'Ребята все хорошо? Что еще осталось?',
+                text: membersToday + steps.step_4.messages[randomNumber],
                 channel: '#slackbot_daemon'
             }, function (err, response) {
                 console.log(response);
             });
-            steps.step_4 = true;
+            steps.step_4.checked = true;
         }
     }
     if (hours == 18 && minutes == 10) {
-        if (!steps.step_5) {
+        if (!steps.step_5.checked) {
             slack.api('chat.postMessage', {
-                text: 'Конец дня! Все готово для сдачи дежурства?',
+                text: membersToday + steps.step_5.messages[randomNumber],
                 channel: '#slackbot_daemon'
             }, function (err, response) {
                 console.log(response);
             });
-            steps.step_5 = true;
+            steps.step_5.checked = true;
         }
     }
-    if (hours == 18 && minutes == 10) {
-        if (!steps.step_6) {
+    if (hours == 18 && minutes == 40) {
+        if (!steps.step_6.checked) {
             slack.api('chat.postMessage', {
-                text: 'Спасибо всем за Вашу работу! Вы самые лучшие!',
+                text: membersToday + steps.step_6.messages[randomNumber],
                 channel: '#slackbot_daemon'
             }, function (err, response) {
                 console.log(response);
             });
-            steps.step_6 = true;
+            steps.step_6.checked = true;
         }
     }
-    //if (pingCount == 5) {
+    // Use this function for stoping script.
     //    clearInterval(ping);
-    //}
-    pingCount++;
-    // do your stuff here
 }, the_interval);
