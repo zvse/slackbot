@@ -1,114 +1,100 @@
 'use strict';
 
+// Define variables
+// define modules
 var Slack = require('slack-node'),
     fs = require('fs'),
-    sleep = require('sleep'),
-
-    apiToken = "xoxp-7813169409-8549932064-20996960166-028257259d",
-    slack = new Slack(apiToken),
-
+    // time variables
     date = new Date(),
-    hours = '',
-    minutes = '',
-    member = '',
-    message = '',
+    hours,
+    minutes,
+    currentDay,
+    // Config variables
+    config,
+    slack,
+    randomNumber,
+    // Define variables are related to people
+    member,
+    members,
+    membersToday,
+    message,
+    // Define other variables
+    steps,
+    currentStep,
+    the_interval;
 
-    randomNumber = Math.floor(Math.random() * 3),
+// Get config
+config = fs.readFileSync("config.json");
+config = JSON.parse(config);
 
-    currentDay = date.getDay(),
-    data = fs.readFileSync("members.json"),
-    data = JSON.parse(data),
-    members = data[currentDay - 1].members,
+// Get all members. 
+currentDay = date.getDay();
+members = fs.readFileSync("members.json");
+members = JSON.parse(members);
+members = members[currentDay - 1].members;
 
-    steps = fs.readFileSync("steps.json"),
-    steps = JSON.parse(steps),
+// Get steps.
+steps = fs.readFileSync("steps.json");
+steps = JSON.parse(steps);
 
-    the_interval = 60 *1000,
-    pingCount = 0,
-    membersToday = '';
+// Every 1 minute
+the_interval = 60 * 1000;
+currentStep = 0;
+membersToday = '';
 
+// Define slack object with config.
+slack = new Slack(config.token);
+
+// Define interval and run script by interval.
 var ping = setInterval(function () {
     date = new Date();
     currentDay = date.getDay();
     hours = date.getHours();
     minutes = date.getMinutes();
-    console.log("Часы: " + hours + " Минуты: " + minutes);
-    if (hours == 10 && minutes == 0) {
-        if (!steps.step_1.checked) {
-            message = steps.step_1.messages[randomNumber];
-            console.log(message);
-            slack.api('chat.postMessage', {
-                text: message,
-                channel: '#slackbot_daemon'
-            }, function (err, response) {
-                console.log(response);
-            });
-            steps.step_1.checked = true;
-        }
-    }
-    if (hours == 10 && minutes == 1) {
-        if (!steps.step_2.checked) {
-            for (var i = 0; i < members.length; i++) {
-                member = members[i];
-                if (member.id) {
-                    membersToday += "<@" + member.id + "> ";
-                    message = "<@" + member.id + "> " + member.ability;
-                    console.log(message);
-                    slack.api('chat.postMessage', {
-                        text: message,
-                        channel: '#slackbot_daemon'
-                    }, function (err, response) {
-                        console.log(response);
-                    });
+    randomNumber = Math.floor(Math.random() * 3);
+    console.log("Time: " + hours + ":" + minutes);
+    console.log("Current step: " + currentStep);
+    // If current time is coming...
+    if (hours == steps[currentStep].hours && minutes == steps[currentStep].minutes) {
+        // Should we skip this step.
+        if (!steps[currentStep].skip) {
+            // If this step is initial, then send message to all people.
+            if (steps[currentStep].initial) {
+                for (var i = 0; i < members.length; i++) {
+                    member = members[i];
+                    if (member.id) {
+                        membersToday += "<@" + member.id + "> ";
+                        message = "<@" + member.id + "> " + member.ability;
+                        console.log(message);
+                        slack.api('chat.postMessage', {
+                            text: message,
+                            channel: config.channel,
+                            as_user: true
+                        }, function (err, response) {
+                            console.log(response);
+                        });
+                    }
                 }
             }
-            steps.step_2.checked = true;
-        }
-    }
-    if (hours == 13 && minutes == 10) {
-        if (!steps.step_3.checked) {
-            slack.api('chat.postMessage', {
-                text: membersToday + steps.step_3.messages[randomNumber],
-                channel: '#slackbot_daemon'
-            }, function (err, response) {
-                console.log(response);
-            });
-            steps.step_3.checked = true;
-        }
-    }
-    if (hours == 16 && minutes == 10) {
-        if (!steps.step_4.checked) {
-            slack.api('chat.postMessage', {
-                text: membersToday + steps.step_4.messages[randomNumber],
-                channel: '#slackbot_daemon'
-            }, function (err, response) {
-                console.log(response);
-            });
-            steps.step_4.checked = true;
-        }
-    }
-    if (hours == 18 && minutes == 10) {
-        if (!steps.step_5.checked) {
-            slack.api('chat.postMessage', {
-                text: membersToday + steps.step_5.messages[randomNumber],
-                channel: '#slackbot_daemon'
-            }, function (err, response) {
-                console.log(response);
-            });
-            steps.step_5.checked = true;
-        }
-    }
-    if (hours == 18 && minutes == 40) {
-        if (!steps.step_6.checked) {
-            slack.api('chat.postMessage', {
-                text: membersToday + steps.step_6.messages[randomNumber],
-                channel: '#slackbot_daemon'
-            }, function (err, response) {
-                console.log(response);
-            });
-            steps.step_6.checked = true;
+            // Send ping-message about today's activity.
+            else {
+                message = steps[currentStep].messages[randomNumber];
+                console.log(message);
+                slack.api('chat.postMessage', {
+                    text: message,
+                    channel: config.channel,
+                    as_user: true
+                }, function (err, response) {
+                    console.log(response);
+                });
+
+            }
+            steps[currentStep].skip = true;
+            currentStep++;
         }
     }
     // Use this function for stoping script.
-    //    clearInterval(ping);
+    if (currentStep == steps.length) {
+       clearInterval(ping);
+    }
 }, the_interval);
