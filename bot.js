@@ -33,7 +33,7 @@ var ping = setInterval(function () {
     hours = date.getHours();
     minutes = date.getMinutes();
     console.log("Часы: " + hours + " Минуты: " + minutes);
-    if (hours == 10 && minutes == 00) {
+    if (hours == 10 && minutes == 0) {
         if (!steps.step_1.checked) {
             message = steps.step_1.messages[randomNumber];
             console.log(message);
@@ -46,7 +46,7 @@ var ping = setInterval(function () {
             steps.step_1.checked = true;
         }
     }
-    if (hours == 10 && minutes == 01) {
+    if (hours == 10 && minutes == 1) {
         if (!steps.step_2.checked) {
             for (var i = 0; i < members.length; i++) {
                 member = members[i];
